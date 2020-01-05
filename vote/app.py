@@ -5,16 +5,11 @@ import socket
 import random
 import json
 
-option_a = os.getenv('OPTION_A', "Cats")
-option_b = os.getenv('OPTION_B', "Dogs")
+option_a = os.getenv('OPTION_A', "CATS")
+option_b = os.getenv('OPTION_B', "DOGS")
 hostname = socket.gethostname()
 
 app = Flask(__name__)
-
-def get_redis():
-    if not hasattr(g, 'redis'):
-        g.redis = Redis(host="redis", db=0, socket_timeout=5)
-    return g.redis
 
 @app.route("/", methods=['POST','GET'])
 def hello():
@@ -25,10 +20,10 @@ def hello():
     vote = None
 
     if request.method == 'POST':
-        redis = get_redis()
+        #redis = get_redis()
         vote = request.form['vote']
         data = json.dumps({'voter_id': voter_id, 'vote': vote})
-        redis.rpush('votes', data)
+        #redis.rpush('votes', data)
 
     resp = make_response(render_template(
         'index.html',
